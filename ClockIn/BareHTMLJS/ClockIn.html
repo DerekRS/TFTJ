@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ClockIn - time clock tool</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">
+            // placeholder data
+        </script>
+        <script type="text/javascript">
+            var idTick = setInterval(fnTick, 1000);
+            var _dayMinutes = -1;   // Time of day, kept in minutes since midnight
+
+            /// function getDM
+            /// Return time of day in minutes.  That is, the number of minutes since midnight
+            function getDM(d) {
+                // d is a Date object, or null/omitted to use the current date.
+                var dt = d;
+                if (typeof dt == "undefined" || !dt) {
+                    dt = new Date();
+                }
+                return dt.getHours()*60 + dt.getMinutes();
+            }
+
+            function formatTime(dm) {
+                // dm is minutes since midnight
+                var hours = Math.floor(dm / 60);
+                var minutes = dm - hours * 60;
+
+                return hours.toString() + ":" + Math.floor(minutes/10) + minutes % 10;
+            }
+
+            function fnTick(){
+                var now = new Date();
+                var tmpMinutes = getDM(now);
+                if (tmpMinutes != _dayMinutes) {
+                    // Update the displayed time
+                    document.getElementById("txClock").innerText = formatTime(tmpMinutes);
+                    _dayMinutes = tmpMinutes;
+                }
+                return; // return void
+            }
+        </script>
+        <style type="text/css">
+            body {
+                background-color: beige;
+                font-family: "Arial Black", Gadget, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ClockIn</h1>
+        <!-- Form for clocking the start of a new task. -->
+        <div>  <!-- TODO: this is an overly simplified form; expand it carefully to allow
+                    richer interactions -->
+            Task: <select >
+                    <option value="Break">Break</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Map">Map</option>
+                    <option value="Plan">Plan</option>
+                    <option value="Setup">Setup</option>
+                    <option value="Travel">Travel</option>
+                </select>
+                <!-- TODO: Enable starting at a time in the past -->
+                <button type="button">Now</button>
+                <span id="txClock">time display</span>
+                <button type="Button">Start</button>
+            </div>
+        <!-- BEGIN placeholder HTML content. Plan is to generate this dynamically from local storage -->
+        <!-- List of currently logged hours -->
+        <!-- Summary of time used, in categories -->
+        <!-- END placeholder HTML content. -->
+        <!-- Form for categories -->
+    </body>
+</html>
